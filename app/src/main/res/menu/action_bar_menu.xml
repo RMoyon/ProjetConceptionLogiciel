@@ -11,4 +11,17 @@
         android:icon="@drawable/ic_map"
         android:title="Map"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/account_menu"
+        android:title="AccountMenu"
+        android:orderInCategory="101"
+        android:icon="@drawable/ic_account"
+        app:showAsAction="always">
+
+        <menu>
+            <item android:id="@+id/action_login"
+                android:title="Se connecter" />
+        </menu>
+
+    </item>
 </menu>

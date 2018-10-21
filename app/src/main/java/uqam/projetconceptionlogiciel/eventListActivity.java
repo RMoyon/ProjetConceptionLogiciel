@@ -85,6 +85,10 @@ public class eventListActivity extends AppCompatActivity {
                 Intent intent_map = new Intent(this, MapsActivity.class);
                 startActivity(intent_map);
                 return true;
+            case R.id.action_login:
+                Intent intent_login = new Intent(this, LoginActivity.class);
+                startActivity(intent_login);
+                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
