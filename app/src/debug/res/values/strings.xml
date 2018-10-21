@@ -1,4 +1,4 @@
 <resources>
-    <string name="title_event_list">events</string>
+    <string name="title_event_list">Évènements ou rabais actuels</string>
     <string name="title_event_detail">event Detail</string>
 </resources>
