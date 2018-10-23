@@ -1,0 +1,19 @@
+#Ignore le répertoire .idea
+/.idea
+
+
+#Ignore le répertoire .gradle
+/.gradle
+
+
+#Ignore le répertoire build et les sous répertoires build
+/build
+**/build
+
+
+#Ignore le fichier local.properties
+/local.properties
+
+
+#Ignore le fichier local.properties
+/ProjetConceptionLogiciel.iml
