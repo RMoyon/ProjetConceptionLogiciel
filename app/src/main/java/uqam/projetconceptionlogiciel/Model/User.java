@@ -1,4 +1,4 @@
-import java.sql.Date;
+package uqam.projetconceptionlogiciel.Model;
 
 public class User {
 	
@@ -7,21 +7,19 @@ public class User {
 	private String password;
 	private String lastName;
 	private String firstName;
-	private Date birthDate;
 	
 	private GreatDeal canParticipate[];
 	private GreatDeal isParticipating[];
 	private University studiesAt[];
 	
-	
-	public User(Integer id, String login, String password, String lastName, String firstName, Date birthDate) {
+	public User(){}
+	public User(Integer id, String login, String password, String lastName, String firstName) {
 		super();
 		this.id = id;
 		this.login = login;
 		this.password = password;
 		this.lastName = lastName;
 		this.firstName = firstName;
-		this.birthDate = birthDate;
 	}
 	
 	public String getLogin() {
@@ -47,12 +45,6 @@ public class User {
 	}
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-	public Date getBirthDate() {
-		return birthDate;
-	}
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
 	}
 	public Integer getId() {
 		return id;

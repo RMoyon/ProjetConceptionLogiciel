@@ -1,3 +1,5 @@
+package uqam.projetconceptionlogiciel.Model;
+
 import java.sql.Date;
 
 public class Period {

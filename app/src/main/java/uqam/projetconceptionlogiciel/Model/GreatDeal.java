@@ -1,3 +1,4 @@
+package uqam.projetconceptionlogiciel.Model;
 
 public class GreatDeal {
 
@@ -10,7 +11,7 @@ public class GreatDeal {
 	private Period[] periods;
 	private Information information;
 	
-	// Question ? Utilité ?
+	// Question ? Utilitï¿½ ?
 	private User[] personInterested;
 	private User[] personParticipating;
 	

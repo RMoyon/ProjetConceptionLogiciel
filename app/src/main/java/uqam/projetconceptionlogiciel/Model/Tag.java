@@ -1,3 +1,4 @@
+package uqam.projetconceptionlogiciel.Model;
 
 public class Tag {
 
