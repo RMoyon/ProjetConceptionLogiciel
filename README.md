@@ -1,5 +1,4 @@
 # ProjetConceptionLogiciel
-========
 
 Ce projet a été créer dans le cadre du cours Principes et applications de la conception de logiciels. Il s'agit d'une application Android utilisant un serveur RESTFul.
 
