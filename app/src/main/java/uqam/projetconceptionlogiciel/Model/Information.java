@@ -6,13 +6,17 @@ public class Information {
 	private String streetName;
 	private String town;
 	private String postalCode;
+	private Double latitude;
+	private Double longitude;
 
-	public Information(String streetNumber, String streetName, String town, String postalCode) {
+	public Information(String streetNumber, String streetName, String town, String postalCode, Double latitude, Double longitude) {
 		super();
 		this.streetNumber = streetNumber;
 		this.streetName = streetName;
 		this.town = town;
 		this.postalCode = postalCode;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 	public void setStreetNumber(String streetNumber) {
 		this.streetNumber = streetNumber;
@@ -26,12 +30,20 @@ public class Information {
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
-	
+
+	public Double getLatitude() {
+		return this.latitude;
+	}
+
+	public Double getLongitude() {
+		return this.longitude;
+	}
+
 	@Override
 	public String toString() {
 		return "Information [streetNumber=" + streetNumber + ", streetName=" + streetName + ", town=" + town
 				+ ", postalCode=" + postalCode + "]";
 	}
-	
-	
+
+
 }
