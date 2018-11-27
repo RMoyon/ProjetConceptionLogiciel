@@ -1,4 +1,4 @@
-package uqam.projetconceptionlogiciel;
+package uqam.projetconceptionlogiciel.Activities;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import uqam.projetconceptionlogiciel.R;
 import uqam.projetconceptionlogiciel.dummy.DummyContent;
 
 /**

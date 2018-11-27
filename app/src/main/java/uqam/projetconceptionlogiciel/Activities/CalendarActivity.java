@@ -1,7 +1,9 @@
-package uqam.projetconceptionlogiciel;
+package uqam.projetconceptionlogiciel.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import uqam.projetconceptionlogiciel.R;
 
 public class CalendarActivity extends AppCompatActivity {
 

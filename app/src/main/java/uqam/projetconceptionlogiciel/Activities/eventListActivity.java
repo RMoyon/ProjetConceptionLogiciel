@@ -1,4 +1,4 @@
-package uqam.projetconceptionlogiciel;
+package uqam.projetconceptionlogiciel.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import uqam.projetconceptionlogiciel.R;
 import uqam.projetconceptionlogiciel.dummy.DummyContent;
 
 import java.util.List;

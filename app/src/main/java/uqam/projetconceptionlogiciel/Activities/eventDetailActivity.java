@@ -1,4 +1,4 @@
-package uqam.projetconceptionlogiciel;
+package uqam.projetconceptionlogiciel.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+
+import uqam.projetconceptionlogiciel.R;
 
 /**
  * An activity representing a single event detail screen. This
