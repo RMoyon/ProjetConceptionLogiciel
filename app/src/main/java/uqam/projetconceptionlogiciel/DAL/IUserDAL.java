@@ -9,4 +9,6 @@ public interface IUserDAL {
     Observable<Response<User>> authentificateUser(String login, String password);
 
     Observable<Response<User>> createUser(User newUser);
+
+    Observable<Response<User>> updateUser(User user);
 }

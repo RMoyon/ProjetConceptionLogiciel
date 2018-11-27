@@ -1,4 +1,4 @@
-package uqam.projetconceptionlogiciel.APIErrorHandling;
+package uqam.projetconceptionlogiciel.APIError;
 
 public interface IGreatDealAPIError {
     public boolean greatDealNameAlreadyExist();

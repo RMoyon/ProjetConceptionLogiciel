@@ -11,14 +11,14 @@ import java.util.concurrent.CountDownLatch;
 
 import io.reactivex.functions.Consumer;
 import retrofit2.Response;
-import uqam.projetconceptionlogiciel.APIErrorHandling.IUserAPIError;
+import uqam.projetconceptionlogiciel.APIError.IUserAPIError;
 import uqam.projetconceptionlogiciel.DAL.IUserDAL;
 import uqam.projetconceptionlogiciel.Model.User;
-import uqam.projetconceptionlogiciel.RetrofitAPIErrorHandling.UserAPIError;
-import uqam.projetconceptionlogiciel.RetrofitDAL.UserDAL;
+import uqam.projetconceptionlogiciel.Retrofit.APIError.UserAPIError;
+import uqam.projetconceptionlogiciel.Retrofit.DAL.UserDAL;
 
 @RunWith(AndroidJUnit4.class)
-public class UserRepositoryInstrumentedTest {
+public class UserDALInstrumentedTest {
 
     private IUserDAL userDAL = new UserDAL();
 
@@ -29,8 +29,8 @@ public class UserRepositoryInstrumentedTest {
         userDAL.authentificateUser("LeGriffeur", "NgWEdi^5kJngbE#3fW+^")
                 .subscribe(new Consumer<Response<User>>() {
                     @Override
-                    public void accept(Response<User> user) {
-                        Assert.assertEquals(1, (int) user.body().getId());
+                    public void accept(Response<User> response) {
+                        Assert.assertEquals(2, (int) response.body().getId());
                         latch.countDown();
                     }
                 });
@@ -67,13 +67,25 @@ public class UserRepositoryInstrumentedTest {
             @Override
             public void accept(Response<User> response) {
                 IUserAPIError apiError = new UserAPIError(response);
-                Boolean testShouldPass = response.isSuccessful() || apiError.loginAlreadyExist();
 
+                Boolean testShouldPass = response.isSuccessful() || apiError.loginAlreadyExist();
                 Assert.assertTrue(testShouldPass);
 
                 latch.countDown();
             }
         });
+
+        latch.await();
+    }
+
+    @Test
+    public void testPatchUserMethod() throws InterruptedException {
+        final CountDownLatch latch = new CountDownLatch(1);
+
+       // User user
+
+        //userDAL.updateUser(1, );
+        latch.countDown();
 
         latch.await();
     }

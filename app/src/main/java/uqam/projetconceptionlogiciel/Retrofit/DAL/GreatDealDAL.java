@@ -1,4 +1,4 @@
-package uqam.projetconceptionlogiciel.RetrofitDAL;
+package uqam.projetconceptionlogiciel.Retrofit.DAL;
 
 import io.reactivex.Observable;
 import retrofit2.Response;
@@ -6,14 +6,14 @@ import uqam.projetconceptionlogiciel.DAL.IGreatDealDAL;
 import uqam.projetconceptionlogiciel.Model.MapPoints;
 import uqam.projetconceptionlogiciel.Model.GreatDeal;
 import uqam.projetconceptionlogiciel.Retrofit.RetrofitClient;
-import uqam.projetconceptionlogiciel.Retrofit.GreatDealRetrofitService;
+import uqam.projetconceptionlogiciel.Retrofit.Services.GreatDealService;
 
 public class GreatDealDAL implements IGreatDealDAL {
 
-    private static GrearDealRetrofitService greatDealService;
+    private static GreatDealService greatDealService;
 
     public GreatDealDAL() {
-        greatDealService = RetrofitClient.getClient("http://10.0.2.2:8000/").create(GreatDealRetrofitService.class);
+        greatDealService = RetrofitClient.getClient("http://10.0.2.2:8000/").create(GreatDealService.class);
     }
 
     @Override

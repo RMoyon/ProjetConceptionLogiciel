@@ -1,5 +1,7 @@
 package uqam.projetconceptionlogiciel.Model;
 
+import java.util.List;
+
 public class User {
 
     private Integer id;
@@ -7,10 +9,10 @@ public class User {
     private String password;
     private String lastName;
     private String firstName;
+    private List<University> universities;
 
     private GreatDeal canParticipate[];
     private GreatDeal isParticipating[];
-    private University studiesAt[];
 
     public User(String login, String password, String lastName, String firstName) {
         this.login = login;
@@ -55,15 +57,19 @@ public class User {
         this.firstName = firstName;
     }
 
+    public List<University> getUniversities() {
+        return universities;
+    }
+
+    public void setUniversities(List<University> universities) {
+        this.universities = universities;
+    }
+
     public GreatDeal[] getCanParticipate() {
         return canParticipate;
     }
 
     public GreatDeal[] getIsParticipating() {
         return isParticipating;
-    }
-
-    public University[] getStudiesAt() {
-        return studiesAt;
     }
 }

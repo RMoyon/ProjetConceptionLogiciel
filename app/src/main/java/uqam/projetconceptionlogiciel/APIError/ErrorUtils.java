@@ -1,4 +1,4 @@
-package uqam.projetconceptionlogiciel.RetrofitAPIErrorHandling;
+package uqam.projetconceptionlogiciel.APIError;
 
 import org.json.JSONException;
 import org.json.JSONObject;

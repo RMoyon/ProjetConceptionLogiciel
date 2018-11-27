@@ -1,11 +1,12 @@
-package uqam.projetconceptionlogiciel.RetrofitAPIErrorHandling;
+package uqam.projetconceptionlogiciel.Retrofit.APIError;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import retrofit2.Response;
-import uqam.projetconceptionlogiciel.APIErrorHandling.IUserAPIError;
+import uqam.projetconceptionlogiciel.APIError.ErrorUtils;
+import uqam.projetconceptionlogiciel.APIError.IUserAPIError;
 import uqam.projetconceptionlogiciel.Model.User;
 
 public class UserAPIError implements IUserAPIError {

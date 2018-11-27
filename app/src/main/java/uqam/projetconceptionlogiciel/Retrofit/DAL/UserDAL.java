@@ -1,4 +1,4 @@
-package uqam.projetconceptionlogiciel.RetrofitDAL;
+package uqam.projetconceptionlogiciel.Retrofit.DAL;
 
 import io.reactivex.Observable;
 import retrofit2.Response;
@@ -6,14 +6,14 @@ import uqam.projetconceptionlogiciel.DAL.IUserDAL;
 import uqam.projetconceptionlogiciel.Model.AuthentificationTokens;
 import uqam.projetconceptionlogiciel.Model.User;
 import uqam.projetconceptionlogiciel.Retrofit.RetrofitClient;
-import uqam.projetconceptionlogiciel.Retrofit.UserRetrofitService;
+import uqam.projetconceptionlogiciel.Retrofit.Services.UserService;
 
 public class UserDAL implements IUserDAL {
 
-    private static UserRetrofitService userService;
+    private static UserService userService;
 
     public UserDAL() {
-        userService = RetrofitClient.getClient("http://10.0.2.2:8000/").create(UserRetrofitService.class);
+        userService = RetrofitClient.getClient("http://10.0.2.2:8000/").create(UserService.class);
     }
 
     @Override
@@ -26,5 +26,10 @@ public class UserDAL implements IUserDAL {
     @Override
     public Observable<Response<User>> createUser(User newUser) {
         return userService.createUser(newUser);
+    }
+
+    @Override
+    public Observable<Response<User>> updateUser(User user) {
+        return userService.updateUser(user.getId(), user);
     }
 }
