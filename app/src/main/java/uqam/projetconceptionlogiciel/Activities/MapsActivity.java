@@ -1,10 +1,12 @@
 package uqam.projetconceptionlogiciel.Activities;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -12,7 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import uqam.projetconceptionlogiciel.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnCameraIdleListener {
 
     private GoogleMap mMap;
 
@@ -39,10 +41,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnCameraIdleListener(this);
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-44, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Add a marker in Montreal and move the camera
+        LatLng initialPosition = new LatLng(45.509252, -73.568441);
+        mMap.addMarker(new MarkerOptions().position(initialPosition).title("UQAM - Salle de cours MGL7361").snippet("Contenu de l'event"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(initialPosition,15));
+
+        /*mMap.setLocationSource(this);
+        mMap.setMyLocationEnabled(true);
+        mMap.setOnMyLocationButtonClickListener(this);
+        Location loc = mMap.getMyLocation();
+        if(loc != null){
+            LatLng point = new LatLng(loc.getLatitude() , loc.getLongitude());
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(point,15));
+        }*/
+
+    }
+
+    @Override
+    public void onCameraIdle() {
+        Toast.makeText(this, "The camera has stopped moving.",
+                Toast.LENGTH_SHORT).show();
+
+
+
+
     }
 }
