@@ -64,9 +64,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onCameraIdle() {
         Toast.makeText(this, "The camera has stopped moving.",
                 Toast.LENGTH_SHORT).show();
-
-
-
-
     }
+
+    /*public void getPlaces(){
+        private IPlacesDAL placesDAL = new PlacesDAL();
+        LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
+        placesDAL.closestGreatDeals(bounds.northeast.latitude, bounds.southwest.latitude, bounds.southwest.longitude,bounds.northeast.longitude, 15)
+                .subscribe(new Consumer<Response<Object []>>() {
+                    @Override
+                    public void accept(Response<Object []> greatDeals) {
+                        for (int i = 0 ; i < greatDeals.length() ; i++ ) {
+                            //TODO En remplissant les Pins avec : (int) greatDeals[0].body().getId()
+                        }
+                    }
+                });
+    }*/
 }
