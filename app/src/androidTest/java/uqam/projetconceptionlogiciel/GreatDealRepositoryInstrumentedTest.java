@@ -33,9 +33,9 @@ public class GreatDealRepositoryInstrumentedTest {
         final CountDownLatch latch = new CountDownLatch(1);
 
         greatDealDAL.closestGreatDeals(45.515812, 45.503181, -73.562812, -73.575429, 5)
-                .subscribe(new Consumer<Response<GreatDeal>>() {
+                .subscribe(new Consumer<Response<Object []>>() {
                     @Override
-                    public void accept(Response<GreatDeal> greatDeals) {
+                    public void accept(Response<Object []> greatDeals) {
                         Assert.assertEquals(1, (int) greatDeals[0].body().getId());
                         latch.countDown();
                     }
