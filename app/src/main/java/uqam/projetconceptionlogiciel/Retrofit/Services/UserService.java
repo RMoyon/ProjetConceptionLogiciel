@@ -3,6 +3,7 @@ package uqam.projetconceptionlogiciel.Retrofit.Services;
 import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -18,4 +19,9 @@ public interface UserService {
 
     @PATCH("/users/{idUser}")
     Observable<Response<User>> updateUser(@Path("idUser") int idUser, @Body User user);
+
+    @DELETE("/users/{idUser}")
+    Observable<Response<User>> deleteUser(@Path("idUser") int idUser);
+
+    //@POST("users/universities/")
 }

@@ -10,7 +10,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".eventListActivity">
+    tools:context=".Activities.eventListActivity">
 
     <!--
     This layout is a two-pane layout for the events
@@ -27,7 +27,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context="uqam.projetconceptionlogiciel.eventListActivity"
+        tools:context="uqam.projetconceptionlogiciel.Activities.eventListActivity"
         tools:listitem="@layout/event_list_content" />
 
     <FrameLayout

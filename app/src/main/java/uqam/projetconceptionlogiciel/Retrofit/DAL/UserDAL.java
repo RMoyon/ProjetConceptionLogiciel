@@ -4,6 +4,7 @@ import io.reactivex.Observable;
 import retrofit2.Response;
 import uqam.projetconceptionlogiciel.DAL.IUserDAL;
 import uqam.projetconceptionlogiciel.Model.AuthentificationTokens;
+import uqam.projetconceptionlogiciel.Model.University;
 import uqam.projetconceptionlogiciel.Model.User;
 import uqam.projetconceptionlogiciel.Retrofit.RetrofitClient;
 import uqam.projetconceptionlogiciel.Retrofit.Services.UserService;
@@ -32,4 +33,14 @@ public class UserDAL implements IUserDAL {
     public Observable<Response<User>> updateUser(User user) {
         return userService.updateUser(user.getId(), user);
     }
+
+    @Override
+    public Observable<Response<User>> deleteUser(User user) {
+        return userService.deleteUser(user.getId());
+    }
+
+//    @Override
+//    public Observable<Response<User>> addUniversity(User user, University university){
+//        return
+//    }
 }

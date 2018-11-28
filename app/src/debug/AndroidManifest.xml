@@ -9,7 +9,7 @@
 
     <application>
         <activity
-            android:name=".eventListActivity"
+            android:name=".Activities.eventListActivity"
             android:label="@string/title_event_list"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,16 +19,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".eventDetailActivity"
+            android:name=".Activities.eventDetailActivity"
             android:label="@string/title_event_detail"
-            android:parentActivityName=".eventListActivity"
+            android:parentActivityName=".Activities.eventListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="uqam.projetconceptionlogiciel.eventListActivity" />
+                android:value="uqam.projetconceptionlogiciel.Activities.eventListActivity" />
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:label="@string/title_activity_login"></activity>
     </application>
 

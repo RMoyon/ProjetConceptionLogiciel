@@ -9,7 +9,9 @@ import org.junit.runner.RunWith;
 
 import java.util.concurrent.CountDownLatch;
 
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import retrofit2.Response;
 import uqam.projetconceptionlogiciel.APIError.IUserAPIError;
 import uqam.projetconceptionlogiciel.DAL.IUserDAL;
@@ -61,19 +63,43 @@ public class UserDALInstrumentedTest {
     public void testPostUserMethod() throws InterruptedException {
         final CountDownLatch latch = new CountDownLatch(1);
 
-        User newUser = new User("unexistantLogin", "pwd", "name", "firstname");
+        User newUser = new User("Login", "pwd", "lastName", "firstName");
 
-        userDAL.createUser(newUser).subscribe(new Consumer<Response<User>>() {
-            @Override
-            public void accept(Response<User> response) {
-                IUserAPIError apiError = new UserAPIError(response);
+        userDAL.createUser(newUser)
+                .flatMap(new Function<Response<User>, ObservableSource<Response<User>>>() {
+                    @Override
+                    public ObservableSource<Response<User>> apply(Response<User> response) {
+                        Assert.assertTrue(response.isSuccessful());
+                        return userDAL.deleteUser(response.body());
+                    }
+                })
+                .subscribe(new Consumer<Response<User>>() {
+                    @Override
+                    public void accept(Response<User> response) {
+                        latch.countDown();
+                    }
+                });
 
-                Boolean testShouldPass = response.isSuccessful() || apiError.loginAlreadyExist();
-                Assert.assertTrue(testShouldPass);
+        latch.await();
+    }
 
-                latch.countDown();
-            }
-        });
+    @Test
+    public void testPostUserMethodWithLoginAlreadyTaken() throws InterruptedException {
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        User newUser = new User("LeGriffeur", "pwd", "lastName", "firstName");
+
+        userDAL.createUser(newUser)
+                .subscribe(new Consumer<Response<User>>() {
+                    @Override
+                    public void accept(Response<User> response) {
+                        IUserAPIError apiError = new UserAPIError(response);
+
+                        Assert.assertTrue(apiError.loginAlreadyExist());
+
+                        latch.countDown();
+                    }
+                });
 
         latch.await();
     }
@@ -82,10 +108,54 @@ public class UserDALInstrumentedTest {
     public void testPatchUserMethod() throws InterruptedException {
         final CountDownLatch latch = new CountDownLatch(1);
 
-       // User user
+        User newUser = new User("Login2", "pwd", "lastName", "firsttName");
+        final String newFirstName = "NewFirstName";
 
-        //userDAL.updateUser(1, );
-        latch.countDown();
+        userDAL.createUser(newUser)
+                .flatMap(new Function<Response<User>, ObservableSource<Response<User>>>() {
+                    @Override
+                    public ObservableSource<Response<User>> apply(Response<User> response) {
+                        response.body().setFirstName(newFirstName);
+                        return userDAL.updateUser(response.body());
+                    }
+                })
+                .flatMap(new Function<Response<User>, ObservableSource<Response<User>>>() {
+                    @Override
+                    public ObservableSource<Response<User>> apply(Response<User> response) {
+                        Assert.assertEquals(newFirstName, response.body().getFirstName());
+                        return userDAL.deleteUser(response.body());
+                    }
+                })
+                .subscribe(new Consumer<Response<User>>() {
+                    @Override
+                    public void accept(Response<User> response) {
+                        latch.countDown();
+                    }
+                });
+
+        latch.await();
+    }
+
+    @Test
+    public void testDeleteUserMethod() throws InterruptedException {
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        User newUser = new User("Login3", "pwd", "lastName", "firstName");
+
+        userDAL.createUser(newUser)
+                .flatMap(new Function<Response<User>, ObservableSource<Response<User>>>() {
+                    @Override
+                    public ObservableSource<Response<User>> apply(Response<User> response) {
+                        return userDAL.deleteUser(response.body());
+                    }
+                })
+                .subscribe(new Consumer<Response<User>>() {
+                    @Override
+                    public void accept(Response<User> response) {
+                        Assert.assertEquals(204, response.code());
+                        latch.countDown();
+                    }
+                });
 
         latch.await();
     }
