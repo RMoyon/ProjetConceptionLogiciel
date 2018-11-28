@@ -15,5 +15,5 @@ public interface IUserDAL {
 
     Observable<Response<User>> deleteUser(User user);
 
-    //Observable<Response<User>> addUniversity(User user, University university);
+    Observable<Response<User>> addUniversity(int idUser, int idUniversity);
 }

@@ -8,6 +8,8 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import uqam.projetconceptionlogiciel.Model.AuthentificationTokens;
+import uqam.projetconceptionlogiciel.Model.Linker;
+import uqam.projetconceptionlogiciel.Model.University;
 import uqam.projetconceptionlogiciel.Model.User;
 
 public interface UserService {
@@ -23,5 +25,6 @@ public interface UserService {
     @DELETE("/users/{idUser}")
     Observable<Response<User>> deleteUser(@Path("idUser") int idUser);
 
-    //@POST("users/universities/")
+    @POST("users/university/")
+    Observable<Response<User>> addUniversity(@Body Linker linker);
 }

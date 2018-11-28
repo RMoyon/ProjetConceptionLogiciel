@@ -5,17 +5,16 @@ public class AuthentificationTokens {
 
     private String password;
 
-    public AuthentificationTokens(String login, String password){
+    public AuthentificationTokens(String login, String password) {
         this.login = login;
         this.password = password;
     }
 
-    public String getLogin(){
+    public String getLogin() {
         return login;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
-
 }

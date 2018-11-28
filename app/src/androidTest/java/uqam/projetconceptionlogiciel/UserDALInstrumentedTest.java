@@ -15,6 +15,7 @@ import io.reactivex.functions.Function;
 import retrofit2.Response;
 import uqam.projetconceptionlogiciel.APIError.IUserAPIError;
 import uqam.projetconceptionlogiciel.DAL.IUserDAL;
+import uqam.projetconceptionlogiciel.Model.University;
 import uqam.projetconceptionlogiciel.Model.User;
 import uqam.projetconceptionlogiciel.Retrofit.APIError.UserAPIError;
 import uqam.projetconceptionlogiciel.Retrofit.DAL.UserDAL;
@@ -153,6 +154,23 @@ public class UserDALInstrumentedTest {
                     @Override
                     public void accept(Response<User> response) {
                         Assert.assertEquals(204, response.code());
+                        latch.countDown();
+                    }
+                });
+
+        latch.await();
+    }
+
+    @Test
+    public void testAddUniversityMethod() throws InterruptedException {
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        userDAL.addUniversity(7,1)
+                .subscribe(new Consumer<Response<User>>() {
+                    @Override
+                    public void accept(Response<User> response) {
+                        University universityAdded = response.body().getUniversities().get(0);
+                        Assert.assertEquals("UQAM", universityAdded.getName());
                         latch.countDown();
                     }
                 });
