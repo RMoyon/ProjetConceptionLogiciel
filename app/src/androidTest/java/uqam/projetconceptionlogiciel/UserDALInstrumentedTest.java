@@ -166,7 +166,7 @@ public class UserDALInstrumentedTest {
     public void testAddAndDeleteUniversityMethod() throws InterruptedException {
         final CountDownLatch latch = new CountDownLatch(1);
 
-        userDAL.addUniversity(7,1)
+        userDAL.addUniversity(7, 1)
                 .flatMap(new Function<Response<User>, ObservableSource<Response<User>>>() {
                     @Override
                     public ObservableSource<Response<User>> apply(Response<User> response) {
@@ -175,13 +175,13 @@ public class UserDALInstrumentedTest {
                         return userDAL.deleteUniversity(7, 1);
                     }
                 }).subscribe(new Consumer<Response<User>>() {
-                    @Override
-                    public void accept(Response<User> response) {
-                        List<University> universities = response.body().getUniversities();
-                        Assert.assertEquals(0, universities.size());
-                        latch.countDown();
-                    }
-                });
+            @Override
+            public void accept(Response<User> response) {
+                List<University> universities = response.body().getUniversities();
+                Assert.assertEquals(0, universities.size());
+                latch.countDown();
+            }
+        });
 
         latch.await();
     }
