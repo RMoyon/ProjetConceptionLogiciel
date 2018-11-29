@@ -1,4 +1,4 @@
-package uqam.projetconceptionlogiciel.Model;
+package uqam.projetconceptionlogiciel.Retrofit.Body;
 
 public class MapPoints {
     private Double top;
@@ -11,7 +11,7 @@ public class MapPoints {
 
     private int returnNumber;
 
-    public MapPoints(Double top, Double bottom, Double left, Double right, int returnNumber){
+    public MapPoints(Double top, Double bottom, Double left, Double right, int returnNumber) {
         this.top = top;
         this.bottom = bottom;
         this.left = left;
@@ -19,23 +19,23 @@ public class MapPoints {
         this.returnNumber = returnNumber;
     }
 
-    public Double getTop(){
+    public Double getTop() {
         return top;
     }
 
-    public Double getBottom(){
+    public Double getBottom() {
         return bottom;
     }
 
-    public Double getLeft(){
+    public Double getLeft() {
         return left;
     }
 
-    public Double getRight(){
+    public Double getRight() {
         return right;
     }
 
-    public int getReturnNumber(){
+    public int getReturnNumber() {
         return returnNumber;
     }
 }

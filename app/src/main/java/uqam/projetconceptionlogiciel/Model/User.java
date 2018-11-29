@@ -10,9 +10,7 @@ public class User {
     private String lastName;
     private String firstName;
     private List<University> universities;
-
-    private GreatDeal canParticipate[];
-    private GreatDeal isParticipating[];
+    private List<GreatDeal> interests;
 
     public User(String login, String password, String lastName, String firstName) {
         this.login = login;
@@ -33,9 +31,7 @@ public class User {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getPassword() { return password; }
 
     public void setPassword(String password) {
         this.password = password;
@@ -65,11 +61,11 @@ public class User {
         this.universities = universities;
     }
 
-    public GreatDeal[] getCanParticipate() {
-        return canParticipate;
+    public List<GreatDeal> getInterests() {
+        return interests;
     }
 
-    public GreatDeal[] getIsParticipating() {
-        return isParticipating;
+    public void setInterests(List<GreatDeal> interests) {
+        this.interests = interests;
     }
 }

@@ -1,20 +1,20 @@
-package uqam.projetconceptionlogiciel.Model;
+package uqam.projetconceptionlogiciel.Retrofit.Body;
 
 public class Linker {
     private int id;
 
     private int inversedId;
 
-    public Linker(int id, int inversedId){
+    public Linker(int id, int inversedId) {
         this.id = id;
         this.inversedId = inversedId;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public int getInversedId(){
+    public int getInversedId() {
         return inversedId;
     }
 }

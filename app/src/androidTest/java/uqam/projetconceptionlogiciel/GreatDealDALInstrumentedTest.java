@@ -8,7 +8,7 @@ import uqam.projetconceptionlogiciel.DAL.IGreatDealDAL;
 import uqam.projetconceptionlogiciel.Retrofit.DAL.GreatDealDAL;
 
 @RunWith(AndroidJUnit4.class)
-public class GreatDealRepositoryInstrumentedTest {
+public class GreatDealDALInstrumentedTest {
 
     private IGreatDealDAL greatDealDAL = new GreatDealDAL();
 

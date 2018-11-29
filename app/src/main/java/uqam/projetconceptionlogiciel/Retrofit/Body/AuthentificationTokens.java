@@ -1,4 +1,4 @@
-package uqam.projetconceptionlogiciel.Model;
+package uqam.projetconceptionlogiciel.Retrofit.Body;
 
 public class AuthentificationTokens {
     private String login;

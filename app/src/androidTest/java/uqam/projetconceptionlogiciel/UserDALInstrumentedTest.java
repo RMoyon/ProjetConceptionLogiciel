@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import io.reactivex.ObservableSource;
@@ -162,15 +163,22 @@ public class UserDALInstrumentedTest {
     }
 
     @Test
-    public void testAddUniversityMethod() throws InterruptedException {
+    public void testAddAndDeleteUniversityMethod() throws InterruptedException {
         final CountDownLatch latch = new CountDownLatch(1);
 
         userDAL.addUniversity(7,1)
-                .subscribe(new Consumer<Response<User>>() {
+                .flatMap(new Function<Response<User>, ObservableSource<Response<User>>>() {
                     @Override
-                    public void accept(Response<User> response) {
+                    public ObservableSource<Response<User>> apply(Response<User> response) {
                         University universityAdded = response.body().getUniversities().get(0);
                         Assert.assertEquals("UQAM", universityAdded.getName());
+                        return userDAL.deleteUniversity(7, 1);
+                    }
+                }).subscribe(new Consumer<Response<User>>() {
+                    @Override
+                    public void accept(Response<User> response) {
+                        List<University> universities = response.body().getUniversities();
+                        Assert.assertEquals(0, universities.size());
                         latch.countDown();
                     }
                 });

@@ -2,7 +2,6 @@ package uqam.projetconceptionlogiciel.DAL;
 
 import io.reactivex.Observable;
 import retrofit2.Response;
-import uqam.projetconceptionlogiciel.Model.University;
 import uqam.projetconceptionlogiciel.Model.User;
 
 public interface IUserDAL {
@@ -16,4 +15,6 @@ public interface IUserDAL {
     Observable<Response<User>> deleteUser(User user);
 
     Observable<Response<User>> addUniversity(int idUser, int idUniversity);
+
+    Observable<Response<User>> deleteUniversity(int idUser, int idUniversity);
 }
