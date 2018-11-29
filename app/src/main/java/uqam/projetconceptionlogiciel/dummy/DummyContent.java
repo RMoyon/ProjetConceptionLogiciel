@@ -43,7 +43,7 @@ public class DummyContent {
 
     private static String makeDetails(int position) {
         StringBuilder builder = new StringBuilder();
-        builder.append("Information de l'évènement : ").append(position);
+        builder.append("Place de l'évènement : ").append(position);
         for (int i = 0; i < position; i++) {
             builder.append("\nbla bla bla bla.");
         }

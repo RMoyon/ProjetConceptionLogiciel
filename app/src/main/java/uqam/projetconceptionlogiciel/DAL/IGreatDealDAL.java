@@ -1,10 +1,12 @@
 package uqam.projetconceptionlogiciel.DAL;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.Response;
 import uqam.projetconceptionlogiciel.Model.GreatDeal;
 
 public interface IGreatDealDAL {
 
-    Observable<Response<GreatDeal>> closestGreatDeals(Double top, Double bottom, Double left, Double right, int returnNumber);
+    Observable<Response<List<GreatDeal>>> getClosestGreatDeals(Double longitude, Double latitude, int returnNumber);
 }

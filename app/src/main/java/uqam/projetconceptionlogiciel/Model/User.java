@@ -57,15 +57,8 @@ public class User {
         return universities;
     }
 
-    public void setUniversities(List<University> universities) {
-        this.universities = universities;
-    }
-
     public List<GreatDeal> getInterests() {
         return interests;
     }
 
-    public void setInterests(List<GreatDeal> interests) {
-        this.interests = interests;
-    }
 }
