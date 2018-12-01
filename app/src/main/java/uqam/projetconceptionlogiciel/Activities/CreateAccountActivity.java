@@ -3,6 +3,7 @@ package uqam.projetconceptionlogiciel.Activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -28,18 +29,42 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import uqam.projetconceptionlogiciel.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
+
+
+import junit.framework.Assert;
+
+
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import retrofit2.Response;
+import uqam.projetconceptionlogiciel.APIError.IUserAPIError;
+import uqam.projetconceptionlogiciel.DAL.IUserDAL;
+import uqam.projetconceptionlogiciel.Model.University;
+import uqam.projetconceptionlogiciel.Model.User;
+import uqam.projetconceptionlogiciel.Retrofit.APIError.UserAPIError;
+import uqam.projetconceptionlogiciel.Retrofit.DAL.UserDAL;
+
 
 /**
  * A login screen that offers login via email/password.
  */
 public class CreateAccountActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+    private IUserDAL userDAL = new UserDAL();
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -61,6 +86,8 @@ public class CreateAccountActivity extends AppCompatActivity implements LoaderCa
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText firstName;
+    private EditText lastName;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -73,6 +100,8 @@ public class CreateAccountActivity extends AppCompatActivity implements LoaderCa
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        firstName = (EditText) findViewById(R.id.first_name);
+        lastName = (EditText) findViewById(R.id.last_name);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -88,12 +117,40 @@ public class CreateAccountActivity extends AppCompatActivity implements LoaderCa
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                login();
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void login() {
+        try {
+            PostUserMethod();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void PostUserMethod() throws InterruptedException {
+        User newUser = new User(mEmailView.getText().toString(), mPasswordView.getText().toString(), lastName.getText().toString(), firstName.getText().toString());
+
+        userDAL.createUser(newUser).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Response<User>>() {
+            @Override
+            public void accept(Response<User> response) throws Exception {
+                IUserAPIError apiError = new UserAPIError(response);
+                Boolean testShouldPass = response.isSuccessful() || apiError.loginAlreadyExist();
+                if (response.isSuccessful()) {
+                    System.out.println("Utilisateur ajouté !");
+                    Toast.makeText(CreateAccountActivity.this, "Utilisateur ajouté !", Toast.LENGTH_LONG).show();
+                } else {
+                    System.out.println("Une erreur est survenue, votre email est peut-être déjà utilisé");
+                    Toast.makeText(CreateAccountActivity.this, "Une erreur est survenue, votre email est peut-être déjà utilisé", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
     }
 
     private void populateAutoComplete() {
