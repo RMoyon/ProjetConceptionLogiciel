@@ -21,7 +21,7 @@ public class ErrorUtils {
         return JSONErrorBody;
     }
 
-    public static JSONObject convertAPIMessageToJSON(ResponseBody errorBody) throws IOException, JSONException {
+    private static JSONObject convertAPIMessageToJSON(ResponseBody errorBody) throws IOException, JSONException {
         BufferedSource source = errorBody.source();
 
         //BufferedSource --> String --> JSONObject

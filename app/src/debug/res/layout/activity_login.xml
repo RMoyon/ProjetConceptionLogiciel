@@ -73,6 +73,16 @@
                 android:text="Se connecter"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/create_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pas de compte ? Créez-en un !"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

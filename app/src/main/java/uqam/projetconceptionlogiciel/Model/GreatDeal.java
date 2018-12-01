@@ -1,73 +1,42 @@
 package uqam.projetconceptionlogiciel.Model;
 
+import java.util.List;
+
 public class GreatDeal {
 
 	private Integer id;
-	private String type;
+	private String typeOfGreatDeal;
 	private String name;
 	private String description;
+	private List<Tag> tags;
+	private List<Period> periods;
+	private List<Place> places;
 
-	private Tag[] tags;
-	private Period[] periods;
-	private Information information;
-	
-	// Question ? Utilit� ?
-	private User[] personInterested;
-	private User[] personParticipating;
-	
-	public GreatDeal(Integer id, String type, String name, String description) {
-		super();
-		this.id = id;
-		this.type = type;
-		this.name = name;
-		this.description = description;
-	}
-
-	//=== GETTERS & SETTERS ===
-	
 	public Integer getId() {
 		return id;
 	}
-	
+
+	public String getType() {
+		return typeOfGreatDeal;
+	}
+
 	public String getName() {
 		return name;
-	}
-	
-	public String getType() {
-		return type;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public User[] getPersonInterested() {
-		return personInterested;
-	}
-
-	public User[] getPersonParticipating() {
-		return personParticipating;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public Tag[] getTags() {
+	public List<Tag> getTags() {
 		return tags;
 	}
 
-	public Period[] getPeriods() {
+	public List<Period> getPeriods() {
 		return periods;
 	}
-	
-	public Information getInformation() {
-		return information;
+
+	public List<Place> getPlaces() {
+		return places;
 	}
-	
-	
 }
