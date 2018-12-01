@@ -140,10 +140,10 @@ public class CreateAccountActivity extends AppCompatActivity implements LoaderCa
             @Override
             public void accept(Response<User> response) throws Exception {
                 IUserAPIError apiError = new UserAPIError(response);
-                Boolean testShouldPass = response.isSuccessful() || apiError.loginAlreadyExist();
                 if (response.isSuccessful()) {
                     System.out.println("Utilisateur ajouté !");
                     Toast.makeText(CreateAccountActivity.this, "Utilisateur ajouté !", Toast.LENGTH_LONG).show();
+                    CreateAccountActivity.this.finish();
                 } else {
                     System.out.println("Une erreur est survenue, votre email est peut-être déjà utilisé");
                     Toast.makeText(CreateAccountActivity.this, "Une erreur est survenue, votre email est peut-être déjà utilisé", Toast.LENGTH_LONG).show();

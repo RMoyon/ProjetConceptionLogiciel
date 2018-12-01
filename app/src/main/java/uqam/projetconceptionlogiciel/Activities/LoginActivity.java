@@ -29,13 +29,37 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import uqam.projetconceptionlogiciel.APIError.IUserAPIError;
+import uqam.projetconceptionlogiciel.DAL.IUserDAL;
+import uqam.projetconceptionlogiciel.Model.User;
 import uqam.projetconceptionlogiciel.R;
+import uqam.projetconceptionlogiciel.Retrofit.DAL.UserDAL;
 
 import static android.Manifest.permission.READ_CONTACTS;
+
+import junit.framework.Assert;
+
+
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import retrofit2.Response;
+import uqam.projetconceptionlogiciel.APIError.IUserAPIError;
+import uqam.projetconceptionlogiciel.DAL.IUserDAL;
+import uqam.projetconceptionlogiciel.Model.University;
+import uqam.projetconceptionlogiciel.Model.User;
+import uqam.projetconceptionlogiciel.Retrofit.APIError.UserAPIError;
+import uqam.projetconceptionlogiciel.Retrofit.DAL.UserDAL;
 
 /**
  * A login screen that offers login via email/password.
@@ -54,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    private IUserDAL userDAL = new UserDAL();
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -89,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                login();
             }
         });
 
@@ -103,6 +128,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
             }
         });
+    }
+
+    private void login() {
+        try {
+            authentificate();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void authentificate() throws InterruptedException {
+
+        userDAL.authentificateUser(mEmailView.getText().toString(), mPasswordView.getText().toString())
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Response<User>>() {
+            @Override
+            public void accept(Response<User> response) {
+                IUserAPIError apiError = new UserAPIError(response);
+                if (apiError.authTokensAreInvalid()) {
+                    System.out.println("Une erreur est survenue");
+                    Toast.makeText(LoginActivity.this, "Mauvais login ou mot de passe", Toast.LENGTH_LONG).show();
+                } else {
+                    System.out.println("apiError null");
+                    Toast.makeText(LoginActivity.this, "Connexion réussi", Toast.LENGTH_LONG).show();
+                    LoginActivity.this.finish();
+                }
+
+            }
+        });
+
     }
 
     private void populateAutoComplete() {
