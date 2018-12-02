@@ -10,13 +10,24 @@ import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import io.reactivex.functions.Consumer;
+import retrofit2.Response;
+import uqam.projetconceptionlogiciel.DAL.IPlaceDAL;
+import uqam.projetconceptionlogiciel.Model.Place;
 import uqam.projetconceptionlogiciel.R;
+import uqam.projetconceptionlogiciel.Retrofit.DAL.PlaceDAL;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnCameraIdleListener {
 
     private GoogleMap mMap;
+    private List<Place> listPlaces = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +73,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onCameraIdle() {
-        Toast.makeText(this, "The camera has stopped moving.",
-                Toast.LENGTH_SHORT).show();
+        /*Toast.makeText(this, "The camera has stopped moving.",
+                Toast.LENGTH_SHORT).show();*/
+        getPlaces();
     }
 
-    /*public void getPlaces(){
-        private IPlacesDAL placesDAL = new PlacesDAL();
+    public void getPlaces() {
+        IPlaceDAL placeDAL = new PlaceDAL();
         LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-        placesDAL.closestGreatDeals(bounds.northeast.latitude, bounds.southwest.latitude, bounds.southwest.longitude,bounds.northeast.longitude, 15)
-                .subscribe(new Consumer<Response<Object []>>() {
+        final CountDownLatch latch = new CountDownLatch(1);
+        //List<Place> test = new ArrayList<>();
+
+        /*placeDAL.getClosestPlaces(bounds.northeast.latitude, bounds.southwest.latitude, bounds.southwest.longitude,bounds.northeast.longitude, 15)
+                .subscribe(new Consumer<Response<List<Place>>>() {
+
                     @Override
-                    public void accept(Response<Object []> greatDeals) {
-                        for (int i = 0 ; i < greatDeals.length() ; i++ ) {
-                            //TODO En remplissant les Pins avec : (int) greatDeals[0].body().getId()
-                        }
+                    public void accept(Response<List<Place>> response) {
+                        //System.out.println(response.body().size());
+                        //listPlaces = response.body();
+                        latch.countDown();
                     }
                 });
-    }*/
+
+        try {
+            latch.await();*
+
+        }catch(InterruptedException e){
+            System.out.println("Erreur InterruptedException");
+        }*/
+
+        placeDAL.getClosestPlaces(	45.515812, 45.503181, -73.575429, -73.562812, 5)
+                .subscribe(new Consumer<Response<List<Place>>>() {
+                    @Override
+                    public void accept(Response<List<Place>> response) {
+                        //Assert.assertEquals(1, response.body().size());
+                        latch.countDown();
+                    }
+                });
+
+        if (listPlaces.isEmpty()) {
+            Toast.makeText(this, "Pins Updated",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Pins not updated",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }
