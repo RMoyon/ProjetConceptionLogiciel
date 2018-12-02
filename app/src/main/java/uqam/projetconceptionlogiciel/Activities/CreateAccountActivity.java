@@ -2,6 +2,7 @@ package uqam.projetconceptionlogiciel.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -66,11 +67,15 @@ public class CreateAccountActivity extends AppCompatActivity {
                 IUserAPIError apiError = new UserAPIError(response);
                 if (response.isSuccessful()) {
                     System.out.println("Utilisateur ajouté !");
-                    Toast.makeText(CreateAccountActivity.this, "Utilisateur ajouté !", Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(CreateAccountActivity.this, "Utilisateur ajouté !", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                     CreateAccountActivity.this.finish();
                 } else {
                     System.out.println("Une erreur est survenue, votre email est peut-être déjà utilisé");
-                    Toast.makeText(CreateAccountActivity.this, "Une erreur est survenue, votre email est peut-être déjà utilisé", Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(CreateAccountActivity.this, "Une erreur est survenue, votre email est peut-être déjà utilisé", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
 
             }

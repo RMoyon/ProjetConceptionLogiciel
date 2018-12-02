@@ -3,6 +3,7 @@ package uqam.projetconceptionlogiciel.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -74,10 +75,14 @@ public class LoginActivity extends AppCompatActivity {
                 IUserAPIError apiError = new UserAPIError(response);
                 if (apiError.authTokensAreInvalid()) {
                     System.out.println("Une erreur est survenue");
-                    Toast.makeText(LoginActivity.this, "Mauvais login ou mot de passe", Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(LoginActivity.this, "Mauvais login ou mot de passe", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 } else {
                     System.out.println("apiError null");
-                    Toast.makeText(LoginActivity.this, "Connexion réussi", Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(LoginActivity.this, "Connexion réussi", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                     LoginActivity.this.finish();
                 }
 
