@@ -1,8 +1,9 @@
 package uqam.projetconceptionlogiciel.Model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Place {
+public class Place implements Serializable {
 
     private String streetNumber;
     private String streetName;

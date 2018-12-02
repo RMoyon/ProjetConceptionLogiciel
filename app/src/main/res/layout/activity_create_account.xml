@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".Activities.LoginActivity">
+    tools:context=".Activities.CreateAccountActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -31,10 +31,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <EditText
+                android:id="@+id/first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Prénom"
+                android:inputType="text"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nom"
+                android:inputType="text"
+                android:singleLine="true" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <EditText
                     android:id="@+id/email"
                     android:layout_width="match_parent"
@@ -70,18 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Se connecter"
+                android:text="Valider"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/create_account"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Pas de compte ? Créez-en un !"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"/>
 
         </LinearLayout>
     </ScrollView>
