@@ -36,7 +36,7 @@ public class GreatDealAdapter extends RecyclerView.Adapter<GreatDealAdapter.Grea
     @Override
     public void onBindViewHolder(GreatDealAdapter.GreatDealViewHolder holder, int position) {
         final GreatDeal item = items.get(position);
-        holder.eventName.setText(item.getName());
+        holder.eventName.setText(item.getId() + ". " + item.getName());
         if (listener != null) {
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override

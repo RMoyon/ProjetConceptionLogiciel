@@ -109,8 +109,6 @@ public class eventListActivity extends AppCompatActivity implements GreatDealIte
             this.adapter = new GreatDealAdapter(this.greatDealList, this);
             this.recyclerView.setAdapter(this.adapter);
         }
-        System.out.println("test");
-        System.out.println("Ma greatDealList" + this.greatDealList.get(1).getName());
     }
 
 

@@ -72,7 +72,7 @@ public class eventDetailFragment extends Fragment {
             }
 
             if (mItem != null) {
-                ((TextView) getView().findViewById(R.id.event_detail)).setText(mItem.getDescription());
+                ((TextView) getView().findViewById(R.id.event_detail)).setText(mItem.getDescription() + "\n\nType : " + mItem.getType());
             }
         }
     }
