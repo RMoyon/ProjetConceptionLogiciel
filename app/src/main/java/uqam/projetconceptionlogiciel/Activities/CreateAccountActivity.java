@@ -59,27 +59,33 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     public void PostUserMethod() throws InterruptedException {
-        User newUser = new User(mEmailView.getText().toString(), mPasswordView.getText().toString(), lastName.getText().toString(), firstName.getText().toString());
+        if (mEmailView.getText().toString().isEmpty() || mPasswordView.getText().toString().isEmpty()) {
+            Toast toast = Toast.makeText(CreateAccountActivity.this, "Un ou plusieurs champs vide", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } else {
+            User newUser = new User(mEmailView.getText().toString(), mPasswordView.getText().toString(), lastName.getText().toString(), firstName.getText().toString());
 
-        userDAL.createUser(newUser).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Response<User>>() {
-            @Override
-            public void accept(Response<User> response) throws Exception {
-                IUserAPIError apiError = new UserAPIError(response);
-                if (response.isSuccessful()) {
-                    System.out.println("Utilisateur ajouté !");
-                    Toast toast = Toast.makeText(CreateAccountActivity.this, "Utilisateur ajouté !", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                    CreateAccountActivity.this.finish();
-                } else {
-                    System.out.println("Une erreur est survenue, votre email est peut-être déjà utilisé");
-                    Toast toast = Toast.makeText(CreateAccountActivity.this, "Une erreur est survenue, votre email est peut-être déjà utilisé", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
+            userDAL.createUser(newUser).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Response<User>>() {
+                @Override
+                public void accept(Response<User> response) throws Exception {
+                    IUserAPIError apiError = new UserAPIError(response);
+                    if (response.isSuccessful()) {
+                        System.out.println("Utilisateur ajouté !");
+                        Toast toast = Toast.makeText(CreateAccountActivity.this, "Utilisateur ajouté !", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        CreateAccountActivity.this.finish();
+                    } else {
+                        System.out.println("Une erreur est survenue, votre email est peut-être déjà utilisé");
+                        Toast toast = Toast.makeText(CreateAccountActivity.this, "Une erreur est survenue, votre email est peut-être déjà utilisé", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
+
                 }
-
-            }
-        });
+            });
+        }
     }
 }
 

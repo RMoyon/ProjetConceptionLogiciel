@@ -93,10 +93,8 @@ public class eventListActivity extends AppCompatActivity implements GreatDealIte
             @Override
             public void accept(final Response<List<GreatDeal>> greatDeals) {
                 if (greatDeals.body() != null) {
-                    System.out.println("greatDeals[0] : " + greatDeals.body());
                     setGreatDealList(greatDeals.body());
                 } else {
-                    System.out.println("greatDeals null");
                 }
             }
         });
