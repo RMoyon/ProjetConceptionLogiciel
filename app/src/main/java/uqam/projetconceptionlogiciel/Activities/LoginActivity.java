@@ -67,27 +67,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void authentificate() throws InterruptedException {
+        if (mEmailView.getText().toString().isEmpty() || mPasswordView.getText().toString().isEmpty()) {
+            Toast toast = Toast.makeText(LoginActivity.this, "Un ou plusieurs champs vide", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } else {
+            userDAL.authentificateUser(mEmailView.getText().toString(), mPasswordView.getText().toString())
+                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Response<User>>() {
+                @Override
+                public void accept(Response<User> response) {
+                    IUserAPIError apiError = new UserAPIError(response);
+                    if (apiError.authTokensAreInvalid()) {
+                        Toast toast = Toast.makeText(LoginActivity.this, "Mauvais login ou mot de passe", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(LoginActivity.this, "Connexion réussi", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        LoginActivity.this.finish();
+                    }
 
-        userDAL.authentificateUser(mEmailView.getText().toString(), mPasswordView.getText().toString())
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Response<User>>() {
-            @Override
-            public void accept(Response<User> response) {
-                IUserAPIError apiError = new UserAPIError(response);
-                if (apiError.authTokensAreInvalid()) {
-                    System.out.println("Une erreur est survenue");
-                    Toast toast = Toast.makeText(LoginActivity.this, "Mauvais login ou mot de passe", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                } else {
-                    System.out.println("apiError null");
-                    Toast toast = Toast.makeText(LoginActivity.this, "Connexion réussi", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                    LoginActivity.this.finish();
                 }
-
-            }
-        });
+            });
+        }
     }
 }
 
