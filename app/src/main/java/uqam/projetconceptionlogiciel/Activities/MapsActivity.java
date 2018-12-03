@@ -8,6 +8,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -22,6 +23,8 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import uqam.projetconceptionlogiciel.DAL.IPlaceDAL;
+import uqam.projetconceptionlogiciel.InfoWindow.InfoWindowCustom;
+import uqam.projetconceptionlogiciel.InfoWindow.InfoWindowData;
 import uqam.projetconceptionlogiciel.Model.Place;
 import uqam.projetconceptionlogiciel.ObjectPool.MarkerPool;
 import uqam.projetconceptionlogiciel.R;
@@ -55,6 +58,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng initialPosition = new LatLng(45.509252, -73.568441);
         //mMap.addMarker(new MarkerOptions().position(initialPosition).title("UQAM - Salle de cours MGL7361").snippet("Contenu de l'event"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(initialPosition,15));
+
+        InfoWindowCustom customInfoWindow = new InfoWindowCustom(this);
+        mMap.setInfoWindowAdapter(customInfoWindow);
+
     }
 
     @Override
@@ -106,9 +113,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Place tempPlace = entry.getValue();
 
             tempMarker.setPosition(new LatLng(tempPlace.getLatitude(), tempPlace.getLongitude()));
-            tempMarker.setSnippet(tempPlace.toString());
-            tempMarker.setTitle(tempPlace.getWebsiteUrl());
+            //tempMarker.setSnippet(tempPlace.toString());
+            //tempMarker.setTitle(tempPlace.getGreatDeals().size() + " Evenement(s) à cette adresse");
+            setMarkerText(tempMarker);
+            setMarkerColor(tempMarker);
             tempMarker.setVisible(true);
+
+            //Activation de l'infobulle
+            mMap.setOnMarkerClickListener(
+                    new GoogleMap.OnMarkerClickListener() {
+                        boolean doNotMoveCameraToCenterMarker = true;
+                        public boolean onMarkerClick(Marker marker) {
+                            marker.showInfoWindow();
+                            return doNotMoveCameraToCenterMarker;
+                        }
+                    });
+
         }
     }
 
@@ -118,6 +138,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Map.Entry<Marker, Place> entry = it.next();
             markerPool.returnReusable(entry.getKey());
             it.remove();
+        }
+    }
+
+    public void setMarkerText(Marker marker){
+        Place tempPlace = listPlaces.get(marker);
+        InfoWindowData info = new InfoWindowData(tempPlace.getGreatDeals().get(0).getName(),tempPlace.getGreatDeals().get(0).getDescription());
+        marker.setTag(info);
+    }
+
+    public void setMarkerColor(Marker marker){
+        switch(listPlaces.get(marker).getGreatDeals().get(0).getType()){
+            case "Réduction" :
+                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+                break;
+            case "Festival" :
+                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                break;
+            case "Evenement" :
+                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                break;
+            default :
+                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                break;
         }
     }
 
