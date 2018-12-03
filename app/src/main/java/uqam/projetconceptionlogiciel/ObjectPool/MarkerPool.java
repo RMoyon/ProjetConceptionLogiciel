@@ -34,7 +34,7 @@ public class MarkerPool {
             Marker newMarker = mMap.addMarker(new MarkerOptions()
                     .position(defaultPosition)
                     .draggable(false).visible(false));
-            available.add(newMarker);
+            inUse.add(newMarker);
             return newMarker;
         }
         //Donner un marqueur disponible

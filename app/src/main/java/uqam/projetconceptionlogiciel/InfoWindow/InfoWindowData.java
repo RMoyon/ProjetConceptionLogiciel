@@ -2,20 +2,30 @@ package uqam.projetconceptionlogiciel.InfoWindow;
 
 public class InfoWindowData {
 
-    public InfoWindowData(String titre, String description) {
-        this.titre = titre;
+    public InfoWindowData(String name, String title, String description) {
+        this.name = name;
+        this.title = title;
         this.description = description;
     }
 
-    private String titre;
+    private String title;
+    private String name;
     private String description;
 
-    public String getTitre() {
-        return titre;
+    public String getName() {
+        return name;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {

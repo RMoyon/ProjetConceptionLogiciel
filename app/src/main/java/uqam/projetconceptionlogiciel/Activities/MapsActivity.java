@@ -33,7 +33,6 @@ import uqam.projetconceptionlogiciel.Retrofit.DAL.PlaceDAL;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnCameraIdleListener {
 
     public GoogleMap mMap;
-    //private List<Marker> listPlaces = new ArrayList<>();
     private Map<Marker, Place> listPlaces = new HashMap<>();
     private IPlaceDAL placeDAL = new PlaceDAL();
     private MarkerPool markerPool;
@@ -42,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -54,9 +54,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnCameraIdleListener(this);
         this.markerPool = new MarkerPool(15, mMap);
 
-        // Move the camera to UQAM
-        LatLng initialPosition = new LatLng(45.509252, -73.568441);
-        //mMap.addMarker(new MarkerOptions().position(initialPosition).title("UQAM - Salle de cours MGL7361").snippet("Contenu de l'event"));
+        // Move the camera to Montreal
+        LatLng initialPosition = new LatLng(45.497785, -73.580473);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(initialPosition,15));
 
         InfoWindowCustom customInfoWindow = new InfoWindowCustom(this);
@@ -66,14 +65,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onCameraIdle() {
-
         try {
             this.getPlaces();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        //this.printPlaces();
     }
 
     public void getPlaces() throws InterruptedException {
@@ -86,16 +82,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void accept(final Response<List<Place>> places) {
                 returnMarkersToPool();
+                //Marker tempMarker;
 
                 if (places.body() != null){
-                    /*System.out.println("Nombre de lieux : "+ places.body().size());
-                    System.out.println("Position : " + curScreen.northeast.latitude+ curScreen.southwest.latitude+ curScreen.southwest.longitude+ curScreen.northeast.longitude);
-                    System.out.println("Places.body : " + places.body());
-*/
+                    System.out.println("Taille liste lieux : "+ places.body().size());
                     for(int i =0; i<places.body().size(); i++) {
-                        listPlaces.put(markerPool.acquireReusable(), places.body().get(i));
+                        Marker tempMarker = markerPool.acquireReusable();
+                        listPlaces.put(tempMarker, places.body().get(i));
+                        setMarker(tempMarker);
+                        System.out.println("NB enregistré dans la map : "+ listPlaces.size() + " // boucle n°"+ i);
+                        System.out.println("\nType lieux " +places.body().get(i)+" // Type Marker : "+tempMarker);
                     }
-                    setMarkers();
 
                 } else {
                     System.out.println("places null");
@@ -104,20 +101,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    public void setMarkers(){
+    public void setMarker(Marker tempMarker){
 
-        //Initialiser les caractéristique de chaque épingle présente dans la liste
-        for(Iterator<Map.Entry<Marker, Place>> it = listPlaces.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry<Marker, Place> entry = it.next();
-            Marker tempMarker = entry.getKey();
-            Place tempPlace = entry.getValue();
+            Place tempPlace = listPlaces.get(tempMarker);
 
             tempMarker.setPosition(new LatLng(tempPlace.getLatitude(), tempPlace.getLongitude()));
-            //tempMarker.setSnippet(tempPlace.toString());
-            //tempMarker.setTitle(tempPlace.getGreatDeals().size() + " Evenement(s) à cette adresse");
             setMarkerText(tempMarker);
             setMarkerColor(tempMarker);
             tempMarker.setVisible(true);
+            System.out.println("Nom marker "+tempPlace.getName());
 
             //Activation de l'infobulle
             mMap.setOnMarkerClickListener(
@@ -130,7 +122,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     });
 
         }
-    }
 
     public void returnMarkersToPool(){
         //Retourner l'ensemble des markers à la piscine
@@ -143,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void setMarkerText(Marker marker){
         Place tempPlace = listPlaces.get(marker);
-        InfoWindowData info = new InfoWindowData(tempPlace.getGreatDeals().get(0).getName(),tempPlace.getGreatDeals().get(0).getDescription());
+        InfoWindowData info = new InfoWindowData(tempPlace.getName(),tempPlace.getGreatDeals().get(0).getName(),tempPlace.getGreatDeals().get(0).getDescription());
         marker.setTag(info);
     }
 

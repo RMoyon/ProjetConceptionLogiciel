@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Place implements Serializable {
 
+    private String name;
     private String streetNumber;
     private String streetName;
     private String town;
@@ -15,6 +16,8 @@ public class Place implements Serializable {
     private String phoneNumber;
     private String websiteUrl;
     private List<GreatDeal> greatDeals;
+
+    public String getName() { return name; }
 
     public String getStreetNumber() {
         return streetNumber;

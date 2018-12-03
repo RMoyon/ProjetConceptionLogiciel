@@ -23,12 +23,14 @@ public class InfoWindowCustom implements GoogleMap.InfoWindowAdapter {
 
         View v = inflater.inflate(R.layout.echo_info_window, null);
 
-        TextView title = (TextView) v.findViewById(R.id.name);
-        TextView subtitle = (TextView) v.findViewById(R.id.text);
+        TextView name = (TextView) v.findViewById(R.id.name);
+        TextView title = (TextView) v.findViewById(R.id.title);
+        TextView subtitle = (TextView) v.findViewById(R.id.description);
 
         InfoWindowData infoWindowData = (InfoWindowData) marker.getTag();
 
-        title.setText(infoWindowData.getTitre());
+        name.setText(infoWindowData.getName());
+        title.setText(infoWindowData.getTitle());
         subtitle.setText(infoWindowData.getDescription());
         return v;
     }
