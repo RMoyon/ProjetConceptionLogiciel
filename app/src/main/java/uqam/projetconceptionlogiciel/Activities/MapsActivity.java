@@ -2,7 +2,6 @@ package uqam.projetconceptionlogiciel.Activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,23 +10,30 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Marker;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import java.util.Map;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import uqam.projetconceptionlogiciel.DAL.IPlaceDAL;
 import uqam.projetconceptionlogiciel.Model.Place;
+import uqam.projetconceptionlogiciel.ObjectPool.MarkerPool;
 import uqam.projetconceptionlogiciel.R;
 import uqam.projetconceptionlogiciel.Retrofit.DAL.PlaceDAL;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnCameraIdleListener {
 
-    private GoogleMap mMap;
-    private List<Place> listPlaces = new ArrayList<>();
+    public GoogleMap mMap;
+    //private List<Marker> listPlaces = new ArrayList<>();
+    private Map<Marker, Place> listPlaces = new HashMap<>();
+    private IPlaceDAL placeDAL = new PlaceDAL();
+    private MarkerPool markerPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,85 +45,80 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnCameraIdleListener(this);
+        this.markerPool = new MarkerPool(15, mMap);
 
-        // Add a marker in Montreal and move the camera
+        // Move the camera to UQAM
         LatLng initialPosition = new LatLng(45.509252, -73.568441);
-        mMap.addMarker(new MarkerOptions().position(initialPosition).title("UQAM - Salle de cours MGL7361").snippet("Contenu de l'event"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //mMap.addMarker(new MarkerOptions().position(initialPosition).title("UQAM - Salle de cours MGL7361").snippet("Contenu de l'event"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(initialPosition,15));
-
-        /*mMap.setLocationSource(this);
-        mMap.setMyLocationEnabled(true);
-        mMap.setOnMyLocationButtonClickListener(this);
-        Location loc = mMap.getMyLocation();
-        if(loc != null){
-            LatLng point = new LatLng(loc.getLatitude() , loc.getLongitude());
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(point,15));
-        }*/
-
     }
 
     @Override
     public void onCameraIdle() {
-        /*Toast.makeText(this, "The camera has stopped moving.",
-                Toast.LENGTH_SHORT).show();*/
-        getPlaces();
-    }
-
-    public void getPlaces() {
-        IPlaceDAL placeDAL = new PlaceDAL();
-        LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-        final CountDownLatch latch = new CountDownLatch(1);
-        //List<Place> test = new ArrayList<>();
-
-        /*placeDAL.getClosestPlaces(bounds.northeast.latitude, bounds.southwest.latitude, bounds.southwest.longitude,bounds.northeast.longitude, 15)
-                .subscribe(new Consumer<Response<List<Place>>>() {
-
-                    @Override
-                    public void accept(Response<List<Place>> response) {
-                        //System.out.println(response.body().size());
-                        //listPlaces = response.body();
-                        latch.countDown();
-                    }
-                });
 
         try {
-            latch.await();*
-
-        }catch(InterruptedException e){
-            System.out.println("Erreur InterruptedException");
-        }*/
-
-        placeDAL.getClosestPlaces(	45.515812, 45.503181, -73.575429, -73.562812, 5)
-                .subscribe(new Consumer<Response<List<Place>>>() {
-                    @Override
-                    public void accept(Response<List<Place>> response) {
-                        //Assert.assertEquals(1, response.body().size());
-                        latch.countDown();
-                    }
-                });
-
-        if (listPlaces.isEmpty()) {
-            Toast.makeText(this, "Pins Updated",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Pins not updated",
-                    Toast.LENGTH_SHORT).show();
+            this.getPlaces();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
+        //this.printPlaces();
     }
+
+    public void getPlaces() throws InterruptedException {
+
+        final LatLngBounds curScreen = mMap.getProjection().getVisibleRegion().latLngBounds;
+
+        //Recuperation des places comprises dans les bordures de notre vue
+        placeDAL.getClosestPlaces(curScreen.northeast.latitude, curScreen.southwest.latitude, curScreen.southwest.longitude, curScreen.northeast.longitude, 15)
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Response<List<Place>>>() {
+            @Override
+            public void accept(final Response<List<Place>> places) {
+                returnMarkersToPool();
+
+                if (places.body() != null){
+                    /*System.out.println("Nombre de lieux : "+ places.body().size());
+                    System.out.println("Position : " + curScreen.northeast.latitude+ curScreen.southwest.latitude+ curScreen.southwest.longitude+ curScreen.northeast.longitude);
+                    System.out.println("Places.body : " + places.body());
+*/
+                    for(int i =0; i<places.body().size(); i++) {
+                        listPlaces.put(markerPool.acquireReusable(), places.body().get(i));
+                    }
+                    setMarkers();
+
+                } else {
+                    System.out.println("places null");
+                }
+            }
+        });
+    }
+
+    public void setMarkers(){
+
+        //Initialiser les caractéristique de chaque épingle présente dans la liste
+        for(Iterator<Map.Entry<Marker, Place>> it = listPlaces.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<Marker, Place> entry = it.next();
+            Marker tempMarker = entry.getKey();
+            Place tempPlace = entry.getValue();
+
+            tempMarker.setPosition(new LatLng(tempPlace.getLatitude(), tempPlace.getLongitude()));
+            tempMarker.setSnippet(tempPlace.toString());
+            tempMarker.setTitle(tempPlace.getWebsiteUrl());
+            tempMarker.setVisible(true);
+        }
+    }
+
+    public void returnMarkersToPool(){
+        //Retourner l'ensemble des markers à la piscine
+        for(Iterator<Map.Entry<Marker, Place>> it = listPlaces.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<Marker, Place> entry = it.next();
+            markerPool.returnReusable(entry.getKey());
+            it.remove();
+        }
+    }
+
 }
