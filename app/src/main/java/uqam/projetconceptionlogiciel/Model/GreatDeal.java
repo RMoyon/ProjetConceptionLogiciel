@@ -1,8 +1,9 @@
 package uqam.projetconceptionlogiciel.Model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class GreatDeal {
+public class GreatDeal implements Serializable {
 
 	private Integer id;
 	private String typeOfGreatDeal;

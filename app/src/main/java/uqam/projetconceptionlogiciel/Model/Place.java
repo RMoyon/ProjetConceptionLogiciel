@@ -1,9 +1,11 @@
 package uqam.projetconceptionlogiciel.Model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Place {
+public class Place implements Serializable {
     private int id;
+    private String name;
     private String streetNumber;
     private String streetName;
     private String town;
@@ -15,7 +17,10 @@ public class Place {
     private String websiteUrl;
     private List<GreatDeal> greatDeals;
 
+
     public int getId() { return id; }
+
+    public String getName() { return name; }
 
     public String getStreetNumber() {
         return streetNumber;

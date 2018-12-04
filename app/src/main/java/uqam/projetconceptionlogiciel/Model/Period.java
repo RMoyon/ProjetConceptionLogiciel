@@ -1,8 +1,9 @@
 package uqam.projetconceptionlogiciel.Model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Period {
+public class Period implements Serializable {
 
     private Integer id;
     private Date startDate;
