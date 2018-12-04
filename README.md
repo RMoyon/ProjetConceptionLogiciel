@@ -6,7 +6,7 @@ Le serveur RESTFul peut être trouvé à l'adresse : `https://github.com/RMoyon/
 
 L'application suit le patron d'architecture MVP. De plus, il implémente plusieurs design pattern dont le DAO, le Fly-Weight et Object Pool.
 
-la version 26 du SDK a été utilisé pour l'application ainsi que le Nexus 5X. L'application est compatible jusqu'à la version 8 d'Android (Oreo).
+La version 26 du SDK a été utilisé pour l'application ainsi que le Nexus 5X. L'application est compatible jusqu'à la version 8 d'Android (Oreo).
 
 ## Fonctionnalités disponibles
 
