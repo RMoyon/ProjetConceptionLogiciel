@@ -14,6 +14,6 @@ La version 26 du SDK a été utilisé pour l'application ainsi que le Nexus 5X. 
 
 * Vue des "bons plans" proches
 
-* Sélection des "bons plans"
+* Navigation via Google Maps
 
-* Liker les "bons plans"
+* Sélection des "bons plans"
