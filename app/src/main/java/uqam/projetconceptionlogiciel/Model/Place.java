@@ -3,7 +3,7 @@ package uqam.projetconceptionlogiciel.Model;
 import java.util.List;
 
 public class Place {
-
+    private int id;
     private String streetNumber;
     private String streetName;
     private String town;
@@ -14,6 +14,8 @@ public class Place {
     private String phoneNumber;
     private String websiteUrl;
     private List<GreatDeal> greatDeals;
+
+    public int getId() { return id; }
 
     public String getStreetNumber() {
         return streetNumber;
